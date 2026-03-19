@@ -1,0 +1,97 @@
+{
+  "invalid_values_replaced_with_nan": {
+    "age": 0,
+    "income": 0,
+    "daily_gaming_hours": 6,
+    "weekly_sessions": 0,
+    "years_gaming": 0,
+    "sleep_hours": 0,
+    "caffeine_intake": 0,
+    "exercise_hours": 0,
+    "stress_level": 0,
+    "anxiety_score": 0,
+    "depression_score": 0,
+    "social_interaction_score": 0,
+    "relationship_satisfaction": 0,
+    "academic_performance": 0,
+    "work_productivity": 0,
+    "addiction_level": 0,
+    "multiplayer_ratio": 0,
+    "toxic_exposure": 0,
+    "violent_games_ratio": 0,
+    "mobile_gaming_ratio": 0,
+    "night_gaming_ratio": 0,
+    "weekend_gaming_hours": 0,
+    "friends_gaming_count": 0,
+    "online_friends": 0,
+    "streaming_hours": 0,
+    "esports_interest": 0,
+    "headset_usage": 0,
+    "microtransactions_spending": 0,
+    "parental_supervision": 0,
+    "loneliness_score": 0,
+    "aggression_score": 0,
+    "happiness_score": 0,
+    "bmi": 9,
+    "screen_time_total": 106,
+    "eye_strain_score": 0,
+    "back_pain_score": 0,
+    "competitive_rank": 0,
+    "internet_quality": 0
+  },
+  "winsorization": {
+    "microtransactions_spending": {
+      "lower_clip": 5.1298,
+      "upper_clip": 2297.3945,
+      "values_clipped_low": 500,
+      "values_clipped_high": 500
+    },
+    "screen_time_total": {
+      "lower_clip": 1.66,
+      "upper_clip": 19.66,
+      "values_clipped_low": 490,
+      "values_clipped_high": 498
+    },
+    "daily_gaming_hours": {
+      "lower_clip": 0.3,
+      "upper_clip": 13.4507,
+      "values_clipped_low": 488,
+      "values_clipped_high": 500
+    },
+    "weekend_gaming_hours": {
+      "lower_clip": 0.45,
+      "upper_clip": 19.98,
+      "values_clipped_low": 485,
+      "values_clipped_high": 498
+    },
+    "caffeine_intake": {
+      "lower_clip": 0.02,
+      "upper_clip": 9.1501,
+      "values_clipped_low": 371,
+      "values_clipped_high": 500
+    },
+    "exercise_hours": {
+      "lower_clip": 0.02,
+      "upper_clip": 9.15,
+      "values_clipped_low": 333,
+      "values_clipped_high": 497
+    }
+  },
+  "derived_features": [
+    "gaming_intensity_index",
+    "online_social_ratio",
+    "gaming_screen_share",
+    "mental_burden_index"
+  ],
+  "median_imputation": {
+    "daily_gaming_hours": 3.36,
+    "bmi": 23.99,
+    "screen_time_total": 7.36,
+    "gaming_screen_share": 0.498
+  },
+  "gender_encoding": "one_hot",
+  "final_shape": {
+    "rows": 50000,
+    "columns": 45
+  }
+}
