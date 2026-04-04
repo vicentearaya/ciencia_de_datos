@@ -1,100 +1,48 @@
-# Preprocesamiento del Dataset
+# Gaming & Mental Health — Análisis de Datos (Tarea 1)
 
-Este repositorio contiene un script para perfilar y preprocesar el dataset ubicado en [Dataset/gaming_mental_health_10M_40features.csv.gz](c:\Users\mronc\Documents\GitHub\ciencia_de_datos\Dataset\gaming_mental_health_10M_40features.csv.gz).
+Proyecto de Ciencia de Datos Avanzado aplicando la metodología CRISP-DM. Se analiza la relación entre patrones de comportamiento en videojuegos y salud mental, usando un dataset sintético de 10 millones de registros.
 
-## Archivo principal
+## Pregunta analítica
 
-El script principal es [preprocess_dataset.py](c:\Users\mronc\Documents\GitHub\ciencia_de_datos\preprocess_dataset.py).
+> ¿Cuáles son los factores de comportamiento de juego (horas, intensidad, contexto social, hábitos) que mejor predicen niveles elevados de ansiedad, depresión y adicción en jugadores?
 
-Su objetivo es:
-- inspeccionar la estructura del dataset
-- detectar valores inválidos o sospechosos
-- generar un reporte de perfilado
-- aplicar un preprocesamiento reproducible
-- guardar los artefactos resultantes
+## Estructura del repositorio
 
-## Qué se hizo
-
-Se implementó un flujo de trabajo con estas etapas:
-
-1. Carga del dataset desde un archivo `.csv.gz`.
-2. Perfilado general:
-   - cantidad de filas y columnas
-   - nombres de columnas
-   - separación de variables categóricas, binarias, ordinales y continuas
-   - conteo de valores faltantes
-   - perfil numérico con mínimos, máximos, media, desviación estándar y percentiles
-   - detección de outliers usando IQR
-3. Validación de reglas de negocio para detectar valores imposibles o fuera de rango.
-4. Reemplazo de valores inválidos por `NaN`.
-5. Tratamiento de outliers mediante winsorización por percentiles.
-6. Creación de variables derivadas para análisis posterior.
-7. Imputación de valores faltantes numéricos usando la mediana.
-8. Codificación `one-hot` de la variable `gender`.
-9. Escalado robusto opcional para variables continuas.
-
-## Reglas de validación incluidas
-
-El script valida, entre otras, estas condiciones:
-- `sleep_hours` entre `0` y `24`
-- `daily_gaming_hours` entre `0` y `24`
-- `screen_time_total` entre `0` y `24`
-- `bmi` entre `10` y `70`
-- variables tipo score en escala `0-10`
-- variables ratio en rango `0-1`
-- variables ordinales como `stress_level` e `internet_quality` dentro de sus escalas esperadas
-
-Cuando un valor no cumple la regla, se reemplaza por `NaN` y luego puede ser imputado.
-
-## Variables derivadas
-
-El script agrega estas variables cuando las columnas necesarias existen:
-- `gaming_intensity_index`
-- `online_social_ratio`
-- `gaming_screen_share`
-- `mental_burden_index`
-
-## Archivos generados
-
-Por defecto, al ejecutar el script se generan:
-- `dataset_profile.json`: reporte completo del perfil del dataset
-- `preprocessing_log.json`: resumen de las transformaciones aplicadas
-- `dataset_preprocessed.csv`: dataset procesado
-
-## Uso
-
-Ejecutar con configuración por defecto:
-
-```powershell
-python .\preprocess_dataset.py
+```
+ciencia_de_datos/
+├── RAW/
+│   └── gaming_mental_health_10M_40features.csv.gz   # Dataset original (comprimido)
+├── processed/
+│   └── dataset_preprocessed.csv                     # Dataset limpio (generado al ejecutar el notebook)
+└── Preprocesamiento_y_analisis.ipynb                 # Notebook principal
 ```
 
-Ejecutar sobre una muestra para pruebas rápidas:
+## Cómo ejecutar
 
-```powershell
-python .\preprocess_dataset.py --sample-rows 100000
+1. Instalar dependencias:
+
+```bash
+pip install pandas numpy matplotlib scikit-learn
 ```
 
-Ejecutar con escalado robusto:
+2. Abrir y ejecutar el notebook de forma lineal:
 
-```powershell
-python .\preprocess_dataset.py --scale-continuous
+```
+Preprocesamiento_y_analisis.ipynb
 ```
 
-Ejecutar sin guardar el CSV procesado:
+El notebook lee el dataset desde `RAW/` y guarda el resultado procesado en `processed/dataset_preprocessed.csv`.
 
-```powershell
-python .\preprocess_dataset.py --skip-save-processed
-```
+## Contenido del notebook
 
-Cambiar nombre o ruta de salida:
-
-```powershell
-python .\preprocess_dataset.py --output-csv dataset_preprocessed_full.csv --report-json perfil.json --output-log-json log.json
-```
-
-## Notas
-
-- El script no modifica el archivo original.
-- El preprocesamiento está orientado a análisis exploratorio y preparación inicial para modelado.
-- Si el siguiente paso es entrenar modelos, conviene mover este flujo a un `Pipeline` de `scikit-learn` para evitar fuga de información entre entrenamiento y prueba.
+| Sección | Contenido |
+|---------|-----------|
+| 0 | Contexto, problemática, objetivos SMART y KPIs |
+| 1–2 | Librerías, configuración y carga del dataset |
+| 3–4 | Revisión inicial: tipos, missing, estadísticos, cardinalidad |
+| 5–6 | Reglas de validación y limpieza de valores inválidos |
+| 7 | Tratamiento de outliers (winsorización + boxplots) |
+| 8–9 | Variables derivadas, imputación y codificación |
+| 10 | Visualizaciones EDA |
+| 12 | Data Quality Report estructurado |
+| 13 | Arquitectura del pipeline (diagrama Mermaid) |
