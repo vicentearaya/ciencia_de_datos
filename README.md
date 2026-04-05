@@ -12,7 +12,7 @@ Proyecto de Ciencia de Datos Avanzado aplicando la metodología CRISP-DM. Se ana
 ciencia_de_datos/
 ├── RAW/
 │   └── gaming_mental_health_10M_40features.csv.gz   # Dataset original (comprimido)
-├── processed/
+├── Dataset/
 │   └── dataset_preprocessed.csv                     # Dataset limpio (generado al ejecutar el notebook)
 └── Preprocesamiento_y_analisis.ipynb                 # Notebook principal
 ```
