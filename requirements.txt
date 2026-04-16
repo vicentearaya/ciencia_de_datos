@@ -1,0 +1,19 @@
+# ── Entorno para ejecutar preprocesamiento.ipynb ─────────────────────────────
+# Python recomendado: 3.11 o 3.12 (no usar 3.14, aun sin soporte completo)
+#
+# Crear entorno limpio:
+#   python3.11 -m venv venv_ds
+#   source venv_ds/bin/activate        (Mac/Linux)
+#   venv_ds\Scripts\activate           (Windows)
+#   pip install -r requirements.txt
+
+# Núcleo científico
+numpy>=1.26.4
+pandas>=2.2.2
+matplotlib>=3.9.4
+scikit-learn>=1.5.0
+
+# Jupyter para ejecutar notebooks
+jupyter>=1.0.0
+notebook>=7.2.0
+ipykernel>=6.29.4
