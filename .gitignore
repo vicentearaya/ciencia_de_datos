@@ -1,3 +1,5 @@
 RAW/*.csv
 .matplotlib/
 processed/
+/Dataset/data_procesada.csv
+Dataset/*.csv
