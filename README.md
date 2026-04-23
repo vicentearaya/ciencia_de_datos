@@ -14,24 +14,46 @@ ciencia_de_datos/
 │   └── gaming_mental_health_10M_40features.csv.gz   # Dataset original (comprimido)
 ├── Dataset/
 │   └── dataset_preprocessed.csv                     # Dataset limpio (generado al ejecutar el notebook)
-└── Preprocesamiento_y_analisis.ipynb                 # Notebook principal
+├── preprocesamiento.ipynb                            # Notebook principal ejecutable
+├── Preprocesamiento_y_analisis.ipynb                 # Notebook alternativo de análisis
+└── venv_ds/                                          # Entorno virtual local
 ```
 
-## Cómo ejecutar
+## Ejecución paso a paso (terminal)
 
-1. Instalar dependencias:
+1. Ir a la raíz del proyecto:
 
 ```bash
-pip install pandas numpy matplotlib scikit-learn
+cd /Users/miilwaukee/Documents/ciencia_de_datos/ciencia_de_datos
 ```
 
-2. Abrir y ejecutar el notebook de forma lineal:
+2. Activar el entorno virtual:
 
-```
-Preprocesamiento_y_analisis.ipynb
+```bash
+source venv_ds/bin/activate
 ```
 
-El notebook lee el dataset desde `RAW/` y guarda el resultado procesado en `processed/dataset_preprocessed.csv`.
+3. Ejecutar todo el notebook `preprocesamiento.ipynb` de forma automática:
+
+```bash
+jupyter nbconvert --to notebook --execute preprocesamiento.ipynb --output preprocesamiento.ipynb --ExecutePreprocessor.timeout=1800
+```
+
+4. Verificar resultado esperado en consola:
+
+```text
+[NbConvertApp] Converting notebook preprocesamiento.ipynb to notebook
+[NbConvertApp] Writing ... bytes to preprocesamiento.ipynb
+```
+
+5. Revisar artefactos generados:
+- Notebook ejecutado con outputs: `preprocesamiento.ipynb`
+- Dataset procesado: `Dataset/dataset_preprocessed.csv`
+
+## Notas de entorno
+
+- Si estás en una red restringida (por ejemplo, red universitaria), Git puede fallar en `443`; en ese caso usa otra red o revisa configuración de proxy.
+- Si en entornos aislados aparece error de permisos de Jupyter (`~/.jupyter`), define `JUPYTER_CONFIG_DIR` y `JUPYTER_DATA_DIR` dentro del proyecto antes de ejecutar.
 
 ## Contenido del notebook
 
