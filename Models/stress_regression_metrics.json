@@ -1,0 +1,78 @@
+{
+  "task": "stress_regression_from_gaming_parameters",
+  "target": "stress_level",
+  "features_count": 20,
+  "best_model_name": "linear_regression",
+  "metrics_test_sorted_by_mae": [
+    {
+      "model": "linear_regression",
+      "cv_mae_mean": 2.498022247757352,
+      "cv_mae_std": 0.017242593695546142,
+      "cv_rows": 40000,
+      "fit_sample_size": 160000,
+      "mae": 2.4992488556492836,
+      "rmse": 2.8700197035115864,
+      "r2": -0.00010728595842857125
+    },
+    {
+      "model": "ridge",
+      "cv_mae_mean": 2.4980460824190134,
+      "cv_mae_std": 0.017242969348678087,
+      "cv_rows": 40000,
+      "fit_sample_size": 160000,
+      "mae": 2.499249888116541,
+      "rmse": 2.8700192657343195,
+      "r2": -0.00010698085655058698
+    },
+    {
+      "model": "lasso",
+      "cv_mae_mean": 2.49809427847721,
+      "cv_mae_std": 0.017278423439641782,
+      "cv_rows": 40000,
+      "fit_sample_size": 160000,
+      "mae": 2.4992695244336183,
+      "rmse": 2.8699814546186135,
+      "r2": -8.062917861928476e-05
+    },
+    {
+      "model": "dummy_mean",
+      "cv_mae_mean": 2.4981332828125002,
+      "cv_mae_std": 0.018084351209311587,
+      "cv_rows": 40000,
+      "fit_sample_size": 160000,
+      "mae": 2.4993569375000004,
+      "rmse": 2.869885335252961,
+      "r2": -1.364233045486607e-05
+    },
+    {
+      "model": "gradient_boosting",
+      "cv_mae_mean": 2.490298108447846,
+      "cv_mae_std": 0.02482229954677665,
+      "cv_rows": 20000,
+      "fit_sample_size": 60000,
+      "mae": 2.4996636647406816,
+      "rmse": 2.8720178113415415,
+      "r2": -0.0015003201682073364
+    },
+    {
+      "model": "random_forest",
+      "cv_mae_mean": 2.4937654166666663,
+      "cv_mae_std": 0.02717054508358085,
+      "cv_rows": 20000,
+      "fit_sample_size": 60000,
+      "mae": 2.505223958333333,
+      "rmse": 2.889534786602527,
+      "r2": -0.013754252625044705
+    },
+    {
+      "model": "svr_rbf",
+      "cv_mae_mean": 2.6853156013464754,
+      "cv_mae_std": 0.051592049783194725,
+      "cv_rows": 5000,
+      "fit_sample_size": 20000,
+      "mae": 2.6577293367708683,
+      "rmse": 3.143930403525879,
+      "r2": -0.20011449664760295
+    }
+  ]
+}
