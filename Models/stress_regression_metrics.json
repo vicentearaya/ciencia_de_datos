@@ -2,77 +2,334 @@
   "task": "stress_regression_from_gaming_parameters",
   "target": "stress_level",
   "features_count": 20,
-  "best_model_name": "linear_regression",
+  "features_used": [
+    "daily_gaming_hours",
+    "weekly_sessions",
+    "years_gaming",
+    "multiplayer_ratio",
+    "toxic_exposure",
+    "violent_games_ratio",
+    "mobile_gaming_ratio",
+    "night_gaming_ratio",
+    "weekend_gaming_hours",
+    "friends_gaming_count",
+    "online_friends",
+    "streaming_hours",
+    "esports_interest",
+    "headset_usage",
+    "microtransactions_spending",
+    "competitive_rank",
+    "internet_quality",
+    "gaming_intensity_index",
+    "online_social_ratio",
+    "gaming_screen_share"
+  ],
+  "missing_features": [],
+  "dataset_path": "/Users/miilwaukee/Documents/ciencia_de_datos/ciencia_de_datos/Dataset/data_preprocesada.csv",
+  "used_partition_split": true,
+  "best_model_name": "dummy_mean",
   "metrics_test_sorted_by_mae": [
     {
-      "model": "linear_regression",
-      "cv_mae_mean": 2.498022247757352,
-      "cv_mae_std": 0.017242593695546142,
+      "model": "dummy_mean",
+      "cv_mae_mean": 0.8695375932407684,
+      "cv_mae_std": 0.004341945603299278,
       "cv_rows": 40000,
       "fit_sample_size": 160000,
-      "mae": 2.4992488556492836,
-      "rmse": 2.8700197035115864,
-      "r2": -0.00010728595842857125
-    },
-    {
-      "model": "ridge",
-      "cv_mae_mean": 2.4980460824190134,
-      "cv_mae_std": 0.017242969348678087,
-      "cv_rows": 40000,
-      "fit_sample_size": 160000,
-      "mae": 2.499249888116541,
-      "rmse": 2.8700192657343195,
-      "r2": -0.00010698085655058698
+      "mae": 0.8709571028437415,
+      "rmse": 0.9996565169813769,
+      "r2": -2.940597150402624e-05
     },
     {
       "model": "lasso",
-      "cv_mae_mean": 2.49809427847721,
-      "cv_mae_std": 0.017278423439641782,
+      "cv_mae_mean": 0.8697082402052869,
+      "cv_mae_std": 0.004318103558146729,
       "cv_rows": 40000,
       "fit_sample_size": 160000,
-      "mae": 2.4992695244336183,
-      "rmse": 2.8699814546186135,
-      "r2": -8.062917861928476e-05
+      "mae": 0.8709627418312775,
+      "rmse": 0.9996741676118268,
+      "r2": -6.472071214647102e-05
     },
     {
-      "model": "dummy_mean",
-      "cv_mae_mean": 2.4981332828125002,
-      "cv_mae_std": 0.018084351209311587,
+      "model": "ridge",
+      "cv_mae_mean": 0.8697109006709232,
+      "cv_mae_std": 0.004314996943347992,
       "cv_rows": 40000,
       "fit_sample_size": 160000,
-      "mae": 2.4993569375000004,
-      "rmse": 2.869885335252961,
-      "r2": -1.364233045486607e-05
+      "mae": 0.870991817720876,
+      "rmse": 0.9997319040612498,
+      "r2": -0.00018024205987687836
+    },
+    {
+      "model": "linear_regression",
+      "cv_mae_mean": 0.8697109037435167,
+      "cv_mae_std": 0.0043149962018940655,
+      "cv_rows": 40000,
+      "fit_sample_size": 160000,
+      "mae": 0.8709942312780978,
+      "rmse": 0.9997365276565835,
+      "r2": -0.00018949341891616456
     },
     {
       "model": "gradient_boosting",
-      "cv_mae_mean": 2.490298108447846,
-      "cv_mae_std": 0.02482229954677665,
+      "cv_mae_mean": 0.8686441301375124,
+      "cv_mae_std": 0.006928986492038319,
       "cv_rows": 20000,
       "fit_sample_size": 60000,
-      "mae": 2.4996636647406816,
-      "rmse": 2.8720178113415415,
-      "r2": -0.0015003201682073364
+      "mae": 0.8711045190243066,
+      "rmse": 1.0005432493637367,
+      "r2": -0.0018043191268253267
     },
     {
       "model": "random_forest",
-      "cv_mae_mean": 2.4937654166666663,
-      "cv_mae_std": 0.02717054508358085,
+      "cv_mae_mean": 0.8709203290265926,
+      "cv_mae_std": 0.006445645495020072,
       "cv_rows": 20000,
       "fit_sample_size": 60000,
-      "mae": 2.505223958333333,
-      "rmse": 2.889534786602527,
-      "r2": -0.013754252625044705
+      "mae": 0.872077589100746,
+      "rmse": 1.0059070398507388,
+      "r2": -0.01257421185297436
     },
     {
       "model": "svr_rbf",
-      "cv_mae_mean": 2.6853156013464754,
-      "cv_mae_std": 0.051592049783194725,
+      "cv_mae_mean": 0.9697624937004659,
+      "cv_mae_std": 0.02091540527371185,
       "cv_rows": 5000,
       "fit_sample_size": 20000,
-      "mae": 2.6577293367708683,
-      "rmse": 3.143930403525879,
-      "r2": -0.20011449664760295
+      "mae": 0.9553342801699815,
+      "rmse": 1.14499072013584,
+      "r2": -0.3119434063151578
     }
-  ]
+  ],
+  "scenario_comparison": {
+    "gaming_only": {
+      "scenario_name": "gaming_only",
+      "features_used": [
+        "daily_gaming_hours",
+        "weekly_sessions",
+        "years_gaming",
+        "multiplayer_ratio",
+        "toxic_exposure",
+        "violent_games_ratio",
+        "mobile_gaming_ratio",
+        "night_gaming_ratio",
+        "weekend_gaming_hours",
+        "friends_gaming_count",
+        "online_friends",
+        "streaming_hours",
+        "esports_interest",
+        "headset_usage",
+        "microtransactions_spending",
+        "competitive_rank",
+        "internet_quality",
+        "gaming_intensity_index",
+        "online_social_ratio",
+        "gaming_screen_share"
+      ],
+      "features_count": 20,
+      "used_partition_split": true,
+      "best_model_name": "dummy_mean",
+      "best_metrics": {
+        "mae": 0.8709571028437415,
+        "rmse": 0.9996565169813769,
+        "r2": -2.940597150402624e-05
+      },
+      "metrics_test_sorted_by_mae": [
+        {
+          "model": "dummy_mean",
+          "cv_mae_mean": 0.8695375932407684,
+          "cv_mae_std": 0.004341945603299278,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709571028437415,
+          "rmse": 0.9996565169813769,
+          "r2": -2.940597150402624e-05
+        },
+        {
+          "model": "lasso",
+          "cv_mae_mean": 0.8697082402052869,
+          "cv_mae_std": 0.004318103558146729,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709627418312775,
+          "rmse": 0.9996741676118268,
+          "r2": -6.472071214647102e-05
+        },
+        {
+          "model": "ridge",
+          "cv_mae_mean": 0.8697109006709232,
+          "cv_mae_std": 0.004314996943347992,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.870991817720876,
+          "rmse": 0.9997319040612498,
+          "r2": -0.00018024205987687836
+        },
+        {
+          "model": "linear_regression",
+          "cv_mae_mean": 0.8697109037435167,
+          "cv_mae_std": 0.0043149962018940655,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709942312780978,
+          "rmse": 0.9997365276565835,
+          "r2": -0.00018949341891616456
+        },
+        {
+          "model": "gradient_boosting",
+          "cv_mae_mean": 0.8686441301375124,
+          "cv_mae_std": 0.006928986492038319,
+          "cv_rows": 20000,
+          "fit_sample_size": 60000,
+          "mae": 0.8711045190243066,
+          "rmse": 1.0005432493637367,
+          "r2": -0.0018043191268253267
+        },
+        {
+          "model": "random_forest",
+          "cv_mae_mean": 0.8709203290265926,
+          "cv_mae_std": 0.006445645495020072,
+          "cv_rows": 20000,
+          "fit_sample_size": 60000,
+          "mae": 0.872077589100746,
+          "rmse": 1.0059070398507388,
+          "r2": -0.01257421185297436
+        },
+        {
+          "model": "svr_rbf",
+          "cv_mae_mean": 0.9697624937004659,
+          "cv_mae_std": 0.02091540527371185,
+          "cv_rows": 5000,
+          "fit_sample_size": 20000,
+          "mae": 0.9553342801699815,
+          "rmse": 1.14499072013584,
+          "r2": -0.3119434063151578
+        }
+      ]
+    },
+    "all_numeric_no_leakage": {
+      "scenario_name": "all_numeric_no_leakage",
+      "features_used": [
+        "age",
+        "income",
+        "daily_gaming_hours",
+        "weekly_sessions",
+        "years_gaming",
+        "sleep_hours",
+        "caffeine_intake",
+        "exercise_hours",
+        "academic_performance",
+        "work_productivity",
+        "multiplayer_ratio",
+        "toxic_exposure",
+        "violent_games_ratio",
+        "mobile_gaming_ratio",
+        "night_gaming_ratio",
+        "weekend_gaming_hours",
+        "friends_gaming_count",
+        "online_friends",
+        "streaming_hours",
+        "esports_interest",
+        "headset_usage",
+        "microtransactions_spending",
+        "parental_supervision",
+        "bmi",
+        "screen_time_total",
+        "eye_strain_score",
+        "back_pain_score",
+        "competitive_rank",
+        "internet_quality",
+        "gaming_intensity_index",
+        "online_social_ratio",
+        "gaming_screen_share",
+        "gender_Female",
+        "gender_Male",
+        "gender_Other"
+      ],
+      "features_count": 35,
+      "used_partition_split": true,
+      "best_model_name": "gradient_boosting",
+      "best_metrics": {
+        "mae": 0.8709558999607747,
+        "rmse": 1.0003099941767104,
+        "r2": -0.0013372752170461855
+      },
+      "metrics_test_sorted_by_mae": [
+        {
+          "model": "gradient_boosting",
+          "cv_mae_mean": 0.8697118719371637,
+          "cv_mae_std": 0.007296819676760489,
+          "cv_rows": 20000,
+          "fit_sample_size": 60000,
+          "mae": 0.8709558999607747,
+          "rmse": 1.0003099941767104,
+          "r2": -0.0013372752170461855
+        },
+        {
+          "model": "dummy_mean",
+          "cv_mae_mean": 0.8695375932407684,
+          "cv_mae_std": 0.004341945603299278,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709571028437415,
+          "rmse": 0.9996565169813769,
+          "r2": -2.940597150402624e-05
+        },
+        {
+          "model": "lasso",
+          "cv_mae_mean": 0.8698838915793233,
+          "cv_mae_std": 0.0043224572459145735,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709641666833453,
+          "rmse": 0.9997019384762721,
+          "r2": -0.00012028491187510149
+        },
+        {
+          "model": "ridge",
+          "cv_mae_mean": 0.8699400134831198,
+          "cv_mae_std": 0.0043627810783788525,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709724088380927,
+          "rmse": 0.9997763673228712,
+          "r2": -0.00026921044134975425
+        },
+        {
+          "model": "linear_regression",
+          "cv_mae_mean": 0.8699400329166881,
+          "cv_mae_std": 0.004362797533525573,
+          "cv_rows": 40000,
+          "fit_sample_size": 160000,
+          "mae": 0.8709748272998735,
+          "rmse": 0.9997810438470577,
+          "r2": -0.00027856812222459837
+        },
+        {
+          "model": "random_forest",
+          "cv_mae_mean": 0.8703472414922189,
+          "cv_mae_std": 0.00812644644911803,
+          "cv_rows": 20000,
+          "fit_sample_size": 60000,
+          "mae": 0.8714441498702743,
+          "rmse": 1.0048103072716266,
+          "r2": -0.010367412048227997
+        },
+        {
+          "model": "svr_rbf",
+          "cv_mae_mean": 0.964030577645142,
+          "cv_mae_std": 0.019532559199342096,
+          "cv_rows": 5000,
+          "fit_sample_size": 20000,
+          "mae": 0.972983320250958,
+          "rmse": 1.1693592751528914,
+          "r2": -0.368381194108246
+        }
+      ]
+    }
+  },
+  "diagnostic": {
+    "mae_improvement_all_numeric_vs_gaming": 1.2028829667887209e-06,
+    "r2_improvement_all_numeric_vs_gaming": -0.0013078692455421592,
+    "conclusion": "target_dificil_o_ruidoso: incluso usando mas features numericas, el desempeno se mantiene cercano al baseline."
+  }
 }
