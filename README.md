@@ -1,70 +1,43 @@
-# Gaming & Mental Health — Análisis de Datos (Tarea 1)
+# Clasificación — proyecto de ciencia de datos
 
-Proyecto de Ciencia de Datos Avanzado aplicando la metodología CRISP-DM. Se analiza la relación entre patrones de comportamiento en videojuegos y salud mental, usando un dataset sintético de 10 millones de registros.
+Este repositorio en la rama **`clasificacion`** organiza el flujo desde datos crudos hasta modelos de clasificación.
 
-## Pregunta analítica
+## Estructura
 
-> ¿Cuáles son los factores de comportamiento de juego (horas, intensidad, contexto social, hábitos) que mejor predicen niveles elevados de ansiedad, depresión y adicción en jugadores?
+| Ruta | Propósito |
+|------|-----------|
+| `Data_cruda/` | Datos sin procesar (no se versionan archivos pesados; ver `.gitignore`). |
+| `data_preprocesada/` | Salida del preprocesamiento lista para entrenar. |
+| `notebooks/preprocesamiento.py` | Script de preprocesamiento (reemplaza o complementa notebooks). |
+| `models/` | Entrenamiento y evaluación de **5 modelos** de clasificación. |
 
-## Estructura del repositorio
+## Entorno virtual
 
-```
-ciencia_de_datos/
-├── RAW/
-│   └── gaming_mental_health_10M_40features.csv.gz   # Dataset original (comprimido)
-├── Dataset/
-│   └── dataset_preprocessed.csv                     # Dataset limpio (generado al ejecutar el notebook)
-├── preprocesamiento.ipynb                            # Notebook principal ejecutable
-├── Preprocesamiento_y_analisis.ipynb                 # Notebook alternativo de análisis
-└── venv_ds/                                          # Entorno virtual local
-```
-
-## Ejecución paso a paso (terminal)
-
-1. Ir a la raíz del proyecto:
+Python recomendado: **3.11 o 3.12**.
 
 ```bash
-cd /Users/miilwaukee/Documents/ciencia_de_datos/ciencia_de_datos
+cd /ruta/al/repo
+python3 -m venv .venv
+source .venv/bin/activate   # macOS / Linux
+# .venv\Scripts\activate    # Windows
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
-2. Activar el entorno virtual:
+## Uso (orden sugerido)
 
-```bash
-source venv_ds/bin/activate
-```
+1. Coloca los archivos crudos en `Data_cruda/`.
+2. Ejecuta el preprocesamiento (se irá documentando en `notebooks/preprocesamiento.py`).
+3. Entrena y compara los cinco modelos desde `models/train_models.py`, por ejemplo:
 
-3. Ejecutar todo el notebook `preprocesamiento.ipynb` de forma automática:
+   ```bash
+   python models/train_models.py --target nombre_columna_clase
+   ```
 
-```bash
-jupyter nbconvert --to notebook --execute preprocesamiento.ipynb --output preprocesamiento.ipynb --ExecutePreprocessor.timeout=1800
-```
+En macOS con disco **sin distinción de mayúsculas**, evita crear otra carpeta `Models` al lado de `models`: podrían confundirse.
 
-4. Verificar resultado esperado en consola:
+Este README se ampliará conforme avance el proyecto.
 
-```text
-[NbConvertApp] Converting notebook preprocesamiento.ipynb to notebook
-[NbConvertApp] Writing ... bytes to preprocesamiento.ipynb
-```
+## Rama
 
-5. Revisar artefactos generados:
-- Notebook ejecutado con outputs: `preprocesamiento.ipynb`
-- Dataset procesado: `Dataset/dataset_preprocessed.csv`
-
-## Notas de entorno
-
-- Si estás en una red restringida (por ejemplo, red universitaria), Git puede fallar en `443`; en ese caso usa otra red o revisa configuración de proxy.
-- Si en entornos aislados aparece error de permisos de Jupyter (`~/.jupyter`), define `JUPYTER_CONFIG_DIR` y `JUPYTER_DATA_DIR` dentro del proyecto antes de ejecutar.
-
-## Contenido del notebook
-
-| Sección | Contenido |
-|---------|-----------|
-| 0 | Contexto, problemática, objetivos SMART y KPIs |
-| 1–2 | Librerías, configuración y carga del dataset |
-| 3–4 | Revisión inicial: tipos, missing, estadísticos, cardinalidad |
-| 5–6 | Reglas de validación y limpieza de valores inválidos |
-| 7 | Tratamiento de outliers (winsorización + boxplots) |
-| 8–9 | Variables derivadas, imputación y codificación |
-| 10 | Visualizaciones EDA |
-| 12 | Data Quality Report estructurado |
-| 13 | Arquitectura del pipeline (diagrama Mermaid) |
+Todo lo anterior vive solo en **`clasificacion`**; las demás ramas del repositorio no se modifican desde aquí.
