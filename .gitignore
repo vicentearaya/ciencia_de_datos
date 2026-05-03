@@ -56,7 +56,6 @@ data_preprocesada/*.parquet
 # Modelos entrenados y métricas generadas
 models/*.pkl
 models/*.joblib
-models/metrics*.json
 models/*.cbm
 models/*.json
 !models/.gitkeep
