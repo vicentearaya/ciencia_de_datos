@@ -49,7 +49,6 @@ Thumbs.db
 Data_cruda/*.csv
 Data_cruda/*.csv.gz
 Data_cruda/*.parquet
-!Data_cruda/.gitkeep
 data_preprocesada/*.csv
 data_preprocesada/*.parquet
 !data_preprocesada/.gitkeep

@@ -1,4 +1,4 @@
-# Entorno para preprocesamiento y modelos de clasificación
+# Entorno para notebooks de EDA/preprocesamiento y modelos de clasificación
 # Python recomendado: 3.11 o 3.12
 #
 #   python3 -m venv .venv
@@ -7,11 +7,16 @@
 
 numpy>=1.26.4
 pandas>=2.2.2
+scipy>=1.11.0
 scikit-learn>=1.5.0
 matplotlib>=3.9.0
 seaborn>=0.13.2
+missingno>=0.5.2
 joblib>=1.4.2
 
-# Opcional: notebooks
+# Jupyter / notebooks
 jupyter>=1.0.0
+notebook>=7.2.0
 ipykernel>=6.29.0
+nbformat>=5.10.0
+ipynbname>=2024.1.0
