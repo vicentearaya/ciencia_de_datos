@@ -1,70 +1,50 @@
-# Gaming & Mental Health — Análisis de Datos (Tarea 1)
+# Clasificación — proyecto de ciencia de datos
 
-Proyecto de Ciencia de Datos Avanzado aplicando la metodología CRISP-DM. Se analiza la relación entre patrones de comportamiento en videojuegos y salud mental, usando un dataset sintético de 10 millones de registros.
+Este repositorio en la rama **`clasificacion`** organiza el flujo desde datos crudos hasta modelos de clasificación del **nivel de adicción** al videojuego.
 
-## Pregunta analítica
+## Estructura
 
-> ¿Cuáles son los factores de comportamiento de juego (horas, intensidad, contexto social, hábitos) que mejor predicen niveles elevados de ansiedad, depresión y adicción en jugadores?
+| Ruta | Propósito |
+|------|-----------|
+| `Data_cruda/` | Datos sin procesar (CSV/GZ grandes ignorados por git; ver `.gitignore`). |
+| `data_preprocesada/` | Salida del notebook: CSV listo para modelos + `preprocessing_report.json`. |
+| `notebooks/preprocesamiento.ipynb` | **EDA completo**, limpieza, transformación, visualizaciones y guardado de la tabla final. |
+| `models/` | Entrenamiento de **5 modelos** de clasificación (`train_models.py`). |
 
-## Estructura del repositorio
+## Objetivo de modelado
 
-```
-ciencia_de_datos/
-├── RAW/
-│   └── gaming_mental_health_10M_40features.csv.gz   # Dataset original (comprimido)
-├── Dataset/
-│   └── dataset_preprocessed.csv                     # Dataset limpio (generado al ejecutar el notebook)
-├── preprocesamiento.ipynb                            # Notebook principal ejecutable
-├── Preprocesamiento_y_analisis.ipynb                 # Notebook alternativo de análisis
-└── venv_ds/                                          # Entorno virtual local
-```
+- **Variable de negocio:** `addiction_level` (continua 0–10 en el dataset crudo).
+- **Target para clasificación:** `addiction_class` (4 clases por **cuartiles** de severidad), generada en el notebook. La columna continua **no** se incluye en los predictores (evita *data leakage* respecto a la etiqueta discretizada).
 
-## Ejecución paso a paso (terminal)
+## Entorno virtual
 
-1. Ir a la raíz del proyecto:
+Python recomendado: **3.11 o 3.12**.
 
 ```bash
-cd /Users/miilwaukee/Documents/ciencia_de_datos/ciencia_de_datos
+cd /ruta/al/repo
+python3 -m venv .venv
+source .venv/bin/activate   # macOS / Linux
+# .venv\Scripts\activate    # Windows
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
-2. Activar el entorno virtual:
+## Uso (orden sugerido)
 
-```bash
-source venv_ds/bin/activate
-```
+1. Coloca el archivo crudo en `Data_cruda/` (p. ej. `gaming_mental_health_10M_40features.csv.gz`).
+2. Abre y ejecuta **todo** el notebook `notebooks/preprocesamiento.ipynb` (Jupyter o VS Code / Cursor). Al final se crean:
+   - `data_preprocesada/dataset_preprocesado_clasificacion.csv`
+   - `data_preprocesada/preprocessing_report.json`
+3. Entrena los cinco modelos desde la raíz del repo:
 
-3. Ejecutar todo el notebook `preprocesamiento.ipynb` de forma automática:
+   ```bash
+   python models/train_models.py \
+     --data data_preprocesada/dataset_preprocesado_clasificacion.csv \
+     --target addiction_class
+   ```
 
-```bash
-jupyter nbconvert --to notebook --execute preprocesamiento.ipynb --output preprocesamiento.ipynb --ExecutePreprocessor.timeout=1800
-```
+En macOS con disco **sin distinción de mayúsculas**, evita crear otra carpeta `Models` junto a `models`: podrían confundirse.
 
-4. Verificar resultado esperado en consola:
+## Rama
 
-```text
-[NbConvertApp] Converting notebook preprocesamiento.ipynb to notebook
-[NbConvertApp] Writing ... bytes to preprocesamiento.ipynb
-```
-
-5. Revisar artefactos generados:
-- Notebook ejecutado con outputs: `preprocesamiento.ipynb`
-- Dataset procesado: `Dataset/dataset_preprocessed.csv`
-
-## Notas de entorno
-
-- Si estás en una red restringida (por ejemplo, red universitaria), Git puede fallar en `443`; en ese caso usa otra red o revisa configuración de proxy.
-- Si en entornos aislados aparece error de permisos de Jupyter (`~/.jupyter`), define `JUPYTER_CONFIG_DIR` y `JUPYTER_DATA_DIR` dentro del proyecto antes de ejecutar.
-
-## Contenido del notebook
-
-| Sección | Contenido |
-|---------|-----------|
-| 0 | Contexto, problemática, objetivos SMART y KPIs |
-| 1–2 | Librerías, configuración y carga del dataset |
-| 3–4 | Revisión inicial: tipos, missing, estadísticos, cardinalidad |
-| 5–6 | Reglas de validación y limpieza de valores inválidos |
-| 7 | Tratamiento de outliers (winsorización + boxplots) |
-| 8–9 | Variables derivadas, imputación y codificación |
-| 10 | Visualizaciones EDA |
-| 12 | Data Quality Report estructurado |
-| 13 | Arquitectura del pipeline (diagrama Mermaid) |
+El flujo descrito vive en la rama **`clasificacion`**.

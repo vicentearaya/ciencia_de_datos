@@ -1,0 +1,45 @@
+{
+  "n_rows": 1000000,
+  "n_features": 39,
+  "target_column": "addiction_class",
+  "class_labels": [
+    "Bajo",
+    "Medio-bajo",
+    "Medio-alto",
+    "Alto"
+  ],
+  "class_distribution": {
+    "0": 250544,
+    "1": 249897,
+    "2": 250653,
+    "3": 248906
+  },
+  "winsorize_percentiles": {
+    "low": 0.01,
+    "high": 0.99
+  },
+  "winsor_limits_sample": {
+    "age": {
+      "p01": 13.0,
+      "p99": 59.0
+    },
+    "income": {
+      "p01": 6461.0,
+      "p99": 148547.0
+    },
+    "daily_gaming_hours": {
+      "p01": 0.3,
+      "p99": 13.25
+    },
+    "weekly_sessions": {
+      "p01": 1.0,
+      "p99": 39.0
+    },
+    "years_gaming": {
+      "p01": 0.0,
+      "p99": 24.0
+    }
+  },
+  "duplicates_removed": 0,
+  "random_state": 42
+}

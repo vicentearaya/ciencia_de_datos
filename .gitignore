@@ -1,5 +1,74 @@
-RAW/*.csv
+# ── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entornos virtuales (crear con: python3 -m venv .venv)
+.venv/
+venv/
+venv_ds/
+env/
+.env
+.env.*
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Herramientas / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS / sistema
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Datos y artefactos grandes (ajusta según lo que quieras versionar)
+Data_cruda/*.csv
+Data_cruda/*.csv.gz
+Data_cruda/*.parquet
+data_preprocesada/*.csv
+data_preprocesada/*.parquet
+!data_preprocesada/.gitkeep
+
+# Modelos entrenados y métricas generadas
+models/*.pkl
+models/*.joblib
+models/*.cbm
+models/*.json
+!models/.gitkeep
+
+# Logs y cachés locales
+*.log
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# matplotlib
 .matplotlib/
-processed/
-/Dataset/data_procesada.csv
-Dataset/*.csv
