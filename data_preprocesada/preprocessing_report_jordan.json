@@ -1,0 +1,68 @@
+{
+  "input_file": "C:\\Users\\mronc\\Documents\\GitHub\\ciencia_de_datos\\Data_cruda\\jordan_igd_sleep_quality.sav",
+  "source_url": "https://zenodo.org/records/13382368",
+  "doi": "10.5281/zenodo.13382368",
+  "n_rows": 2005,
+  "n_features": 9,
+  "target_column": "igd_label",
+  "feature_columns": [
+    "igd1",
+    "igd2",
+    "igd3",
+    "igd4",
+    "igd5",
+    "igd6",
+    "igd7",
+    "igd8",
+    "igd9"
+  ],
+  "class_map": {
+    "0": "Jugador sin indicadores relevantes de trastorno",
+    "1": "Jugador en riesgo de desarrollar problemas por gaming",
+    "2": "Jugador con alta probabilidad de trastorno por gaming"
+  },
+  "question_map_es": {
+    "igd1": "Piensa constantemente en cuando podra volver a jugar en internet.",
+    "igd2": "Siente que jugar mas tiempo le dejaria mas satisfecho.",
+    "igd3": "Se siente mal cuando no puede jugar en internet.",
+    "igd4": "No logra reducir el tiempo de juego aunque otras personas se lo pidan.",
+    "igd5": "Usa los juegos en internet para evitar pensar en problemas o molestias.",
+    "igd6": "Ha tenido conflictos con otras personas por las consecuencias de su forma de jugar.",
+    "igd7": "Oculta a otras personas cuanto tiempo pasa jugando.",
+    "igd8": "Ha perdido interes en otras actividades porque jugar es lo unico que quiere hacer.",
+    "igd9": "Ha tenido conflictos con familia, amistades o pareja por causa de los juegos."
+  },
+  "value_map": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "target_distribution": {
+    "0": 1194,
+    "1": 506,
+    "2": 305
+  },
+  "yes_count_distribution": {
+    "0": 583,
+    "1": 359,
+    "2": 252,
+    "3": 197,
+    "4": 183,
+    "5": 126,
+    "6": 117,
+    "7": 91,
+    "8": 60,
+    "9": 37
+  },
+  "original_column_labels": {
+    "igd1": " [1) هل مر عليك أوقات كل ما تفكر فيه هو الموعد الذي تستطيع فيه اللعب على الانترنت؟]",
+    "igd2": " [2) هل تشعر بأنك غير راضي وتود أن تلعب أكثر؟]",
+    "igd3": " [3) هل تشعر بالتعاسة عندما لاتستطيع ان تلعب على الانترنت؟]",
+    "igd4": " [4) هل لم تستطع أن تقلل أوقات استخدامك لألعاب الانترنت بعدما اخبرك الآخرون بأن عليك تقليل وقت اللعب؟]",
+    "igd5": " [5) هل تستخدم ألعاب ا0نترنت كي 0 تفكر في أمور تزعجك؟]",
+    "igd6": " [6) هل حدثت لك خلافات مع الآخرين بخصوص عواقب سلوكك في اللعب؟]",
+    "igd7": " [7) هل كنت تخفي عن الآخرين الوقت الذي تقضيه في اللعب؟]",
+    "igd8": " [8) هل فقدت اهتمامك بالهوايات أو الأنشطة الأخرى لأن اللعب هو كل ما تريد أن تقوم به؟]",
+    "igd9": " [9) هل عانيت من خلافات مع العائلة أو الأصدقاء أو الشريك بسبب الالعاب؟]",
+    "Igdlabels": "types of gamers"
+  }
+}

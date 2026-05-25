@@ -1,0 +1,61 @@
+{
+  "dataset": "data_preprocesada\\dataset_preprocesado_jordan.csv",
+  "target": "igd_label",
+  "class_map": {
+    "0": "Jugador sin indicadores relevantes de trastorno",
+    "1": "Jugador en riesgo de desarrollar problemas por gaming",
+    "2": "Jugador con alta probabilidad de trastorno por gaming"
+  },
+  "models": {
+    "logistic_regression": {
+      "accuracy_mean": 1.0,
+      "accuracy_std": 0.0,
+      "balanced_accuracy_mean": 1.0,
+      "balanced_accuracy_std": 0.0,
+      "f1_macro_mean": 1.0,
+      "f1_macro_std": 0.0,
+      "precision_macro_mean": 1.0,
+      "recall_macro_mean": 1.0
+    },
+    "random_forest": {
+      "accuracy_mean": 0.976059850374065,
+      "accuracy_std": 0.006802085634406933,
+      "balanced_accuracy_mean": 0.9602803101773766,
+      "balanced_accuracy_std": 0.014135095591945451,
+      "f1_macro_mean": 0.9636884085927818,
+      "f1_macro_std": 0.011900475756513191,
+      "precision_macro_mean": 0.967844119312581,
+      "recall_macro_mean": 0.9602803101773766
+    },
+    "extra_trees": {
+      "accuracy_mean": 0.9740648379052368,
+      "accuracy_std": 0.009005221987664718,
+      "balanced_accuracy_mean": 0.9580728763192367,
+      "balanced_accuracy_std": 0.016359472496001365,
+      "f1_macro_mean": 0.9614386278320645,
+      "f1_macro_std": 0.015020895509336177,
+      "precision_macro_mean": 0.9653688053608572,
+      "recall_macro_mean": 0.9580728763192367
+    },
+    "gradient_boosting": {
+      "accuracy_mean": 0.9885286783042394,
+      "accuracy_std": 0.006026456844685571,
+      "balanced_accuracy_mean": 0.9794694072603638,
+      "balanced_accuracy_std": 0.010688410267906576,
+      "f1_macro_mean": 0.981749838863152,
+      "f1_macro_std": 0.009381341084479564,
+      "precision_macro_mean": 0.9846574170260203,
+      "recall_macro_mean": 0.9794694072603638
+    },
+    "knn": {
+      "accuracy_mean": 0.9820448877805485,
+      "accuracy_std": 0.007296129096422847,
+      "balanced_accuracy_mean": 0.9731755221010575,
+      "balanced_accuracy_std": 0.012986122266971345,
+      "f1_macro_mean": 0.9728494444151103,
+      "f1_macro_std": 0.011920855449793518,
+      "precision_macro_mean": 0.9736150544168616,
+      "recall_macro_mean": 0.9731755221010575
+    }
+  }
+}

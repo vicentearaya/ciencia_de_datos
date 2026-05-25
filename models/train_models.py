@@ -1,19 +1,11 @@
 """
-Entrena y compara 5 modelos de clasificación para predecir el nivel de adicción
-(`addiction_class`) usando `data_preprocesada/dataset_preprocesado_clasificacion.csv`.
+Entrena y compara 5 modelos de clasificacion multiclase para predecir `igd_label`
+usando el dataset jordano preprocesado.
 
-Uso desde la raíz del repo:
-  python models/train_models.py
-
-O desde models/:
-  cd models && python train_models.py
-
-Por defecto se usa un subconjunto estratificado (ver `--max-rows`) para no cargar
-el millón de filas completo; sube `--max-rows` si quieres métricas más estables.
-
-Opcional: --data, --target, --max-rows, --test-size, --random-state
-
-Salida: tabla comparativa en consola, `metrics.json` y un `.pkl` por modelo.
+Clases:
+  0 = Jugador sin indicadores relevantes de trastorno
+  1 = Jugador en riesgo de desarrollar problemas por gaming
+  2 = Jugador con alta probabilidad de trastorno por gaming
 """
 
 from __future__ import annotations
@@ -24,188 +16,160 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
-from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier, GradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
-    classification_report,
+    balanced_accuracy_score,
     f1_score,
+    make_scorer,
+    precision_score,
+    recall_score,
 )
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
 
-ROOT = Path(__file__).resolve().parent.parent
+from common import DEFAULT_DATA, TARGET_COLUMN, build_preprocessor, load_dataset
+
+CLASS_MAP = {
+    0: "Jugador sin indicadores relevantes de trastorno",
+    1: "Jugador en riesgo de desarrollar problemas por gaming",
+    2: "Jugador con alta probabilidad de trastorno por gaming",
+}
 
 
-def build_models(random_state: int = 42) -> dict[str, Pipeline]:
-    """Cinco clasificadores con escalado cuando aplica."""
+def build_models(random_state: int = 42) -> dict[str, object]:
     return {
-        "logistic_regression": Pipeline(
-            [
-                ("scaler", StandardScaler()),
-                (
-                    "clf",
-                    LogisticRegression(max_iter=2000, random_state=random_state),
-                ),
-            ]
+        "logistic_regression": LogisticRegression(
+            max_iter=5000,
+            class_weight="balanced",
+            random_state=random_state,
         ),
-        "random_forest": Pipeline(
-            [
-                (
-                    "clf",
-                    RandomForestClassifier(
-                        n_estimators=200, random_state=random_state, n_jobs=-1
-                    ),
-                ),
-            ]
+        "random_forest": RandomForestClassifier(
+            n_estimators=400,
+            min_samples_leaf=1,
+            class_weight="balanced_subsample",
+            random_state=random_state,
+            n_jobs=1,
         ),
-        "gradient_boosting": Pipeline(
-            [
-                (
-                    "clf",
-                    GradientBoostingClassifier(random_state=random_state),
-                ),
-            ]
+        "extra_trees": ExtraTreesClassifier(
+            n_estimators=500,
+            min_samples_leaf=1,
+            class_weight="balanced",
+            random_state=random_state,
+            n_jobs=1,
         ),
-        "svc_rbf": Pipeline(
-            [
-                ("scaler", StandardScaler()),
-                (
-                    "clf",
-                    SVC(kernel="rbf", random_state=random_state),
-                ),
-            ]
+        "gradient_boosting": GradientBoostingClassifier(
+            n_estimators=250,
+            learning_rate=0.05,
+            max_depth=3,
+            random_state=random_state,
         ),
-        "knn": Pipeline(
-            [
-                ("scaler", StandardScaler()),
-                ("clf", KNeighborsClassifier(n_neighbors=5)),
-            ]
+        "knn": KNeighborsClassifier(
+            n_neighbors=11,
+            weights="distance",
         ),
     }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Entrenar 5 modelos de clasificación para nivel de adicción."
+        description="Entrenar 5 modelos de clasificacion para gaming disorder."
     )
     parser.add_argument(
         "--data",
         type=Path,
-        default=ROOT / "data_preprocesada" / "dataset_preprocesado_clasificacion.csv",
+        default=DEFAULT_DATA,
         help="CSV preprocesado con features y columna objetivo.",
     )
     parser.add_argument(
         "--target",
         type=str,
-        default="addiction_class",
-        help="Columna objetivo (nivel de adicción).",
+        default=TARGET_COLUMN,
+        help="Columna objetivo multiclase.",
     )
     parser.add_argument(
-        "--test-size",
-        type=float,
-        default=0.2,
-        help="Fracción para conjunto de prueba.",
+        "--cv-splits",
+        type=int,
+        default=5,
+        help="Numero de folds para validacion cruzada estratificada.",
     )
     parser.add_argument(
         "--random-state",
         type=int,
         default=42,
     )
-    parser.add_argument(
-        "--max-rows",
-        type=int,
-        default=200_000,
-        help=(
-            "Máximo de filas tras muestreo estratificado por la clase objetivo "
-            "(mantiene proporciones de addiction_class). "
-            "0 = usar todo el CSV en disco."
-        ),
-    )
     args = parser.parse_args()
 
-    if not args.data.is_file():
-        raise FileNotFoundError(f"No existe el archivo de datos: {args.data}")
-
-    df = pd.read_csv(args.data)
-    if args.target not in df.columns:
-        raise ValueError(f"Columna objetivo '{args.target}' no está en el dataset.")
-
-    X = df.drop(columns=[args.target])
-    y = df[args.target]
-    n_file = len(y)
-
-    if args.max_rows > 0 and n_file > args.max_rows:
-        X, _, y, _ = train_test_split(
-            X,
-            y,
-            train_size=args.max_rows,
-            random_state=args.random_state,
-            stratify=y if y.nunique() > 1 else None,
-        )
-        print(
-            f"Muestreo estratificado por '{args.target}': "
-            f"{len(y):,} filas (de {n_file:,} en el archivo, "
-            f"~{100 * len(y) / n_file:.1f}%)."
-        )
-    else:
-        if args.max_rows == 0:
-            print(f"Sin límite de filas: usando las {n_file:,} filas del archivo.")
-        else:
-            print(
-                f"Filas en archivo ({n_file:,}) ≤ max-rows ({args.max_rows:,}); "
-                "usando todas."
-            )
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=args.test_size,
+    X, y = load_dataset(args.data, target=args.target)
+    preprocessor = build_preprocessor(X)
+    cv = StratifiedKFold(
+        n_splits=args.cv_splits,
+        shuffle=True,
         random_state=args.random_state,
-        stratify=y if y.nunique() > 1 else None,
     )
 
-    out_dir = Path(__file__).resolve().parent
-    metrics_all: dict[str, dict] = {}
+    scoring = {
+        "accuracy": make_scorer(accuracy_score),
+        "balanced_accuracy": make_scorer(balanced_accuracy_score),
+        "f1_macro": make_scorer(f1_score, average="macro"),
+        "precision_macro": make_scorer(precision_score, average="macro", zero_division=0),
+        "recall_macro": make_scorer(recall_score, average="macro", zero_division=0),
+    }
 
-    for name, model in build_models(random_state=args.random_state).items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
+    out_dir = Path(__file__).resolve().parent
+    metrics_all: dict[str, dict[str, float | dict[str, str]]] = {}
+
+    for name, classifier in build_models(random_state=args.random_state).items():
+        model = Pipeline(
+            [
+                ("preprocessor", preprocessor),
+                ("classifier", classifier),
+            ]
+        )
+        scores = cross_validate(
+            model,
+            X,
+            y,
+            cv=cv,
+            scoring=scoring,
+            return_train_score=False,
+            n_jobs=None,
+        )
         metrics_all[name] = {
-            "accuracy": float(accuracy_score(y_test, y_pred)),
-            "f1_macro": float(
-                f1_score(y_test, y_pred, average="macro", zero_division=0)
-            ),
-            "f1_weighted": float(
-                f1_score(y_test, y_pred, average="weighted", zero_division=0)
-            ),
-            "classification_report": classification_report(
-                y_test, y_pred, zero_division=0
-            ),
+            "accuracy_mean": float(scores["test_accuracy"].mean()),
+            "accuracy_std": float(scores["test_accuracy"].std()),
+            "balanced_accuracy_mean": float(scores["test_balanced_accuracy"].mean()),
+            "balanced_accuracy_std": float(scores["test_balanced_accuracy"].std()),
+            "f1_macro_mean": float(scores["test_f1_macro"].mean()),
+            "f1_macro_std": float(scores["test_f1_macro"].std()),
+            "precision_macro_mean": float(scores["test_precision_macro"].mean()),
+            "recall_macro_mean": float(scores["test_recall_macro"].mean()),
         }
-        joblib.dump(model, out_dir / f"{name}.pkl")
+
+        model.fit(X, y)
+        joblib.dump(model, out_dir / f"{name}_jordan_multiclass.pkl")
 
     comparison = pd.DataFrame(
-        [
-            {
-                "modelo": name,
-                "accuracy": m["accuracy"],
-                "f1_macro": m["f1_macro"],
-                "f1_weighted": m["f1_weighted"],
-            }
-            for name, m in metrics_all.items()
-        ]
-    ).sort_values("f1_macro", ascending=False)
+        [{"modelo": name, **metrics} for name, metrics in metrics_all.items()]
+    ).sort_values(
+        ["accuracy_mean", "f1_macro_mean", "balanced_accuracy_mean"],
+        ascending=False,
+    )
 
-    metrics_path = out_dir / "metrics.json"
-    with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump(metrics_all, f, indent=2, ensure_ascii=False)
+    metrics_path = out_dir / "metrics_jordan_classification.json"
+    payload = {
+        "dataset": str(args.data),
+        "target": args.target,
+        "class_map": {str(k): v for k, v in CLASS_MAP.items()},
+        "models": metrics_all,
+    }
+    with open(metrics_path, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, indent=2, ensure_ascii=False)
 
     best = comparison.iloc[0]
-    print("\n=== Tabla comparativa (ordenada por F1 macro) ===\n")
+    print("\n=== Tabla comparativa multiclase (ordenada por accuracy) ===\n")
     print(
         comparison.to_string(
             index=False,
@@ -213,12 +177,12 @@ def main() -> None:
         )
     )
     print(
-        f"\nMejor modelo por F1 macro: {best['modelo']} "
-        f"(accuracy={best['accuracy']:.4f}, f1_macro={best['f1_macro']:.4f})."
+        f"\nMejor modelo: {best['modelo']} "
+        f"(accuracy={best['accuracy_mean']:.4f}, "
+        f"balanced_accuracy={best['balanced_accuracy_mean']:.4f}, "
+        f"f1_macro={best['f1_macro_mean']:.4f})."
     )
-    print(
-        f"\nInformes por clase (classification_report) y demás detalles: {metrics_path}"
-    )
+    print(f"\nMétricas detalladas: {metrics_path}")
 
 
 if __name__ == "__main__":
