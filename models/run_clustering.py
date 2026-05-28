@@ -105,8 +105,9 @@ def main() -> None:
     assignments["pca_1"] = coords[:, 0]
     assignments["pca_2"] = coords[:, 1]
 
-    assignments_path = args.data.parent / "cluster_assignments_jordan.csv"
-    report_path = Path(__file__).resolve().parent / "clustering_report_jordan.json"
+    data_stem = args.data.stem.replace("dataset_preprocesado_", "")
+    assignments_path = args.data.parent / f"cluster_assignments_{data_stem}.csv"
+    report_path = Path(__file__).resolve().parent / f"clustering_report_{data_stem}.json"
     assignments.to_csv(assignments_path, index=False, encoding="utf-8")
 
     crosstab = pd.crosstab(assignments["cluster"], assignments[args.target])

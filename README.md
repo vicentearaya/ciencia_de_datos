@@ -1,10 +1,10 @@
-# Clasificación multiclase de riesgo de trastorno por gaming
+# Clasificación multiclase de riesgo de trastorno por gaming con cuestionario genérico
 
-Este repositorio usa el dataset real jordano [Internet Gaming Disorder and Sleep Quality among Jordanian University Students](https://zenodo.org/records/13382368) para clasificar a los usuarios en **3 niveles de riesgo de trastorno por gaming**.
+Este repositorio usa el dataset real jordano [Internet Gaming Disorder and Sleep Quality among Jordanian University Students](https://zenodo.org/records/13382368) para entrenar un modelo **generic_hybrid**: una combinación entre las 9 preguntas base de síntomas de gaming disorder y un bloque corto de hábitos de juego, sueño y bienestar.
 
 ## Objetivo del proyecto
 
-El objetivo principal es construir una base metodológica para una futura plataforma donde un usuario responda un cuestionario breve y reciba una clasificación interpretable de riesgo.
+El objetivo es construir una base metodológica para una plataforma donde un usuario responda un cuestionario breve y reciba una clasificación interpretable de riesgo.
 
 La variable objetivo es `igd_label`, con tres clases:
 
@@ -12,11 +12,22 @@ La variable objetivo es `igd_label`, con tres clases:
 - `1`: **Jugador en riesgo de desarrollar problemas por gaming**
 - `2`: **Jugador con alta probabilidad de trastorno por gaming**
 
-Estas clases se derivan de las respuestas a los 9 ítems del instrumento IGD:
+## Enfoque `generic_hybrid`
 
-- `0 a 2` respuestas afirmativas: nivel `0`
-- `3 a 5` respuestas afirmativas: nivel `1`
-- `6 a 9` respuestas afirmativas: nivel `2`
+El flujo principal del repo trabaja con dos bloques:
+
+- **Bloque 1**: 9 preguntas base sobre síntomas de gaming disorder (`igd1` a `igd9`)
+- **Bloque 2**: variables genéricas y reutilizables sobre juego, redes sociales, sueño y bienestar
+
+Se eliminaron campos demasiado específicos para una encuesta genérica, como:
+
+- edad exacta
+- ciudad
+- región
+- universidad
+- lugar donde vive
+- ingreso familiar
+- carrera específica
 
 ## Dataset base
 
@@ -24,18 +35,17 @@ Estas clases se derivan de las respuestas a los 9 ítems del instrumento IGD:
 - DOI: [10.5281/zenodo.13382368](https://doi.org/10.5281/zenodo.13382368)
 - Archivo local: `Data_cruda/jordan_igd_sleep_quality.sav`
 
-El flujo principal del repo trabaja con los **9 ítems `igd1` a `igd9`**, ya que son los síntomas directamente vinculados al fenómeno que la plataforma quiere medir.
-
 ## Estructura
 
 | Ruta | Propósito |
 |------|-----------|
 | `Data_cruda/jordan_igd_sleep_quality.sav` | Dataset real base del proyecto. |
-| `scripts/preprocess_real_dataset.py` | Lee el `.sav`, convierte los ítems `Yes/No` a `0/1` y genera el CSV final. |
-| `data_preprocesada/` | Salida del preprocesamiento y clustering. |
-| `models/train_models.py` | Entrena y compara **5 modelos de clasificación multiclase**. |
-| `models/train_classification.py` | Alias del flujo principal de clasificación. |
-| `models/run_clustering.py` | Ejecuta clustering exploratorio sobre los 9 ítems IGD. |
+| `scripts/preprocess_real_dataset.py` | Genera el dataset `generic_hybrid` listo para modelado. |
+| `data_preprocesada/dataset_preprocesado_jordan_generic_hybrid.csv` | Dataset final para entrenamiento. |
+| `data_preprocesada/preprocessing_report_jordan_generic_hybrid.json` | Reporte del preprocesamiento. |
+| `models/train_models.py` | Entrena y compara 5 modelos de clasificación multiclase. |
+| `models/train_classification.py` | Alias del flujo principal. |
+| `models/run_clustering.py` | Ejecuta clustering exploratorio sobre el dataset `generic_hybrid`. |
 | `models/common.py` | Utilidades compartidas de carga y preprocesamiento. |
 
 ## 5 modelos incluidos
@@ -58,32 +68,102 @@ Las métricas reportadas son:
 
 La comparación se hace mediante **validación cruzada estratificada**.
 
+## Cuestionario recomendado para la plataforma
+
+### Bloque 1: síntomas de gaming
+
+Usar respuestas cerradas `Sí / No`.
+
+1. Pienso constantemente en cuándo podré volver a jugar.
+2. Siento que jugar más tiempo me dejaría más satisfecho.
+3. Me siento mal cuando no puedo jugar.
+4. Me cuesta reducir el tiempo que paso jugando.
+5. Uso los videojuegos para evitar pensar en problemas o emociones desagradables.
+6. He tenido conflictos con otras personas por mi forma de jugar.
+7. Oculto cuánto tiempo paso jugando.
+8. He perdido interés en otras actividades por jugar.
+9. He tenido problemas con familia, amistades o pareja por los videojuegos.
+
+### Bloque 2: hábitos de juego, sueño y bienestar
+
+Usar respuestas cerradas, no texto libre.
+
+10. ¿Cuántas horas juegas en una semana típica?
+- Menos de 1 hora por día
+- Entre 1 y 3 horas por día
+- Más de 3 horas por día
+
+11. ¿Cuántas horas al día usas redes sociales?
+- Entre 0 y 2 horas
+- Entre 3 y 4 horas
+- Más de 4 horas
+
+12. ¿Cuál es tu principal motivo para usar internet?
+- Videojuegos
+- Estudiar
+- Trabajo
+- Redes sociales
+- Más de un motivo
+- Otro
+
+13. ¿Cuánto tardas normalmente en quedarte dormido?
+- Menos de 15 minutos
+- Entre 15 y 30 minutos
+- Entre 31 y 60 minutos
+- Más de 60 minutos
+
+14. ¿Cuántas horas duermes normalmente por noche?
+- Menos de 5 horas
+- Entre 5 y 6 horas
+- Entre 6 y 7 horas
+- Entre 7 y 8 horas
+- Más de 8 horas
+
+15. ¿Cómo evaluarías tu calidad general de sueño?
+- Muy buena
+- Bastante buena
+- Bastante mala
+- Muy mala
+
+16. ¿Con qué frecuencia has necesitado ayuda o medicación para dormir durante el último mes?
+- Nunca
+- Menos de una vez por semana
+- Una o dos veces por semana
+- Tres o más veces por semana
+
+17. ¿Con qué frecuencia te cuesta mantenerte despierto durante el día?
+- Nunca
+- Menos de una vez por semana
+- Una o dos veces por semana
+- Tres o más veces por semana
+
+18. ¿Con qué frecuencia te cuesta mantener el entusiasmo para hacer tus actividades?
+- Nunca
+- Menos de una vez por semana
+- Una o dos veces por semana
+- Tres o más veces por semana
+
+## Resultados principales del enfoque `generic_hybrid`
+
+Las métricas del entrenamiento quedaron en:
+
+- `models/metrics_jordan_generic_hybrid_classification.json`
+
+Resumen:
+
+- `logistic_regression`: `accuracy = 1.0000`
+- `gradient_boosting`: `accuracy = 0.9701`
+- `extra_trees`: `accuracy = 0.9586`
+- `random_forest`: `accuracy = 0.9342`
+- `knn`: `accuracy = 0.8713`
+
 ## Clustering
 
-Además del aprendizaje supervisado, el repo incluye clustering exploratorio para identificar perfiles de respuesta dentro de los 9 ítems de IGD.
-
-Se evalúan:
-
-- `KMeans`
-- `AgglomerativeClustering`
-
-La selección del mejor esquema se apoya en `silhouette score`.
-
-## Entorno virtual
-
-Python recomendado: **3.11 o 3.12**.
-
-```bash
-cd /ruta/al/repo
-python -m venv .venv
-.venv\Scripts\activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
+Además del aprendizaje supervisado, el repo incluye clustering exploratorio para detectar perfiles de respuesta dentro del cuestionario `generic_hybrid`.
 
 ## Flujo de uso
 
-### 1. Preprocesar el dataset jordano
+### 1. Preprocesar
 
 ```bash
 python scripts/preprocess_real_dataset.py
@@ -91,56 +171,32 @@ python scripts/preprocess_real_dataset.py
 
 Salida esperada:
 
-- `data_preprocesada/dataset_preprocesado_jordan.csv`
-- `data_preprocesada/preprocessing_report_jordan.json`
+- `data_preprocesada/dataset_preprocesado_jordan_generic_hybrid.csv`
+- `data_preprocesada/preprocessing_report_jordan_generic_hybrid.json`
 
-### 2. Entrenar los 5 modelos de clasificación
+### 2. Entrenar los 5 modelos
 
 ```bash
-python models/train_models.py ^
-  --data data_preprocesada/dataset_preprocesado_jordan.csv ^
-  --target igd_label
+python models/train_models.py
 ```
 
 Salida esperada:
 
 - tabla comparativa en consola
-- `models/metrics_jordan_classification.json`
-- un archivo `.pkl` por modelo
+- `models/metrics_jordan_generic_hybrid_classification.json`
+- un `.pkl` por modelo
 
-### 3. Ejecutar clustering exploratorio
+### 3. Ejecutar clustering
 
 ```bash
-python models/run_clustering.py ^
-  --data data_preprocesada/dataset_preprocesado_jordan.csv ^
-  --target igd_label ^
-  --min-k 2 ^
-  --max-k 6
+python models/run_clustering.py
 ```
 
 Salida esperada:
 
-- `models/clustering_report_jordan.json`
-- `data_preprocesada/cluster_assignments_jordan.csv`
-
-## Preguntas base del cuestionario
-
-El instrumento se apoya en nueve preguntas tipo `Sí/No` sobre síntomas de gaming disorder. El reporte de preprocesamiento guarda una traducción funcional de cada una en `question_map_es`.
-
-En términos prácticos, el cuestionario pregunta por:
-
-- preocupación constante por volver a jugar
-- necesidad de jugar más
-- malestar cuando no puede jugar
-- incapacidad para reducir el tiempo de juego
-- uso del juego para escapar de problemas
-- conflictos con otras personas por jugar
-- ocultamiento del tiempo de juego
-- pérdida de interés en otras actividades
-- conflictos con familia, amistades o pareja por causa del juego
+- `models/clustering_report_jordan_generic_hybrid.json`
+- `data_preprocesada/cluster_assignments_jordan_generic_hybrid.csv`
 
 ## Recomendación metodológica
 
-Este repositorio ya no está orientado a inferir adicción de forma indirecta desde variables débiles. Está orientado a una **plataforma de screening digital**, donde el usuario responde un instrumento breve y el sistema devuelve un nivel de riesgo interpretable.
-
-Ese enfoque es más consistente con los resultados obtenidos y con el uso final esperado del proyecto.
+Este repositorio queda orientado a una **plataforma de screening digital** con un cuestionario suficientemente genérico para reutilizarlo fuera del contexto jordano, pero manteniendo un desempeño alto porque conserva las 9 preguntas centrales del trastorno por gaming.

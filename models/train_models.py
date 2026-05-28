@@ -149,7 +149,8 @@ def main() -> None:
         }
 
         model.fit(X, y)
-        joblib.dump(model, out_dir / f"{name}_jordan_multiclass.pkl")
+        data_stem = args.data.stem.replace("dataset_preprocesado_", "")
+        joblib.dump(model, out_dir / f"{name}_{data_stem}_multiclass.pkl")
 
     comparison = pd.DataFrame(
         [{"modelo": name, **metrics} for name, metrics in metrics_all.items()]
@@ -158,7 +159,7 @@ def main() -> None:
         ascending=False,
     )
 
-    metrics_path = out_dir / "metrics_jordan_classification.json"
+    metrics_path = out_dir / f"metrics_{args.data.stem.replace('dataset_preprocesado_', '')}_classification.json"
     payload = {
         "dataset": str(args.data),
         "target": args.target,
